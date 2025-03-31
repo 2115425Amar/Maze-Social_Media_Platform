@@ -5,3 +5,6 @@ class Post < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy   # A post can be liked (Polymorphic Association).
   validates :description, presence: true
 end
+
+
+

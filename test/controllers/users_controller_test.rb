@@ -12,9 +12,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "adminpassword",
       password_confirmation: "adminpassword"
     )
-    @admin.add_role(:admin) # Assigns admin role dynamically
-    sign_in @admin
+    @admin.add_role(:admin)
+
+    @user = User.create!(
+      first_name: "Regular",
+      last_name: "User",
+      email: "user@example.com",
+      phone_number: "9988776655",
+      password: "userpassword",
+      password_confirmation: "userpassword"
+    )
+
+    sign_in @admin # Ensure admin is signed in for testing
   end
+
 
   test "should get profile" do
     get profile_path
@@ -24,44 +35,44 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should update profile" do
     patch update_profile_path, params: { user: { first_name: "NewName" } }
     assert_redirected_to profile_path
-    @user.reload
-    assert_equal "NewName", @user.first_name
+    @admin.reload
+    assert_equal "NewName", @admin.first_name
   end
 
   test "should not allow non-admins to access index" do
+    sign_out @admin
+    sign_in @user
     get users_path
     assert_redirected_to root_path
     assert_equal "Access denied", flash[:alert]
   end
 
   test "should allow admin to access index" do
-    sign_out @user
-    sign_in @admin
     get users_path
     assert_response :success
   end
 
   test "should allow admin to manage users" do
-    sign_out @user
-    sign_in @admin
     get manage_users_path
     assert_response :success
   end
 
   test "should allow admin to report users" do
-    sign_out @user
-    sign_in @admin
     get report_users_path
     assert_response :success
   end
 
   test "should prevent non-admins from managing users" do
+    sign_out @admin
+    sign_in @user
     get manage_users_path
     assert_redirected_to root_path
     assert_equal "Access denied", flash[:alert]
   end
 
   test "should prevent non-admins from reporting users" do
+    sign_out @admin
+    sign_in @user
     get report_users_path
     assert_redirected_to root_path
     assert_equal "Access denied", flash[:alert]

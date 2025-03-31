@@ -9,7 +9,6 @@ end
 
 
 # What is Polymorphic Association?
-# 
 # A polymorphic association means a record can belong to multiple models.
 
 # In the likes table:
