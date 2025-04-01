@@ -93,6 +93,5 @@ RSpec.describe User, type: :model do
       user.run_callbacks(:create)
     end
   end
-
-
+  
 end

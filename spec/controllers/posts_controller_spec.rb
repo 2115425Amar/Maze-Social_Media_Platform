@@ -79,7 +79,7 @@ RSpec.describe PostsController, type: :controller do
     context 'when user is owner' do
       # Purpose: Ensure a user can update their own posts.
       it 'updates the post' do
-        patch :update, params: { id: 25, post: { description: 'Updated' } }
+        patch :update, params: { id: post_obj.id, post: { description: 'Updated' } }
         expect(post_obj.reload.description).to eq('Updated')
       end
     end

@@ -7,6 +7,6 @@ FactoryBot.define do
     trait :private do
       public { false }
     end
-
+    
   end
-end 
+end
