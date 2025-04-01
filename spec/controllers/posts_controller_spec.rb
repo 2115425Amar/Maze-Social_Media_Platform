@@ -12,18 +12,17 @@ RSpec.describe PostsController, type: :controller do
   before { sign_in user }
 
   # 2. Testing index Action (GET #index)
+  # Test that the index action returns a successful response
   describe 'GET #index' do
-    # Test that the index action returns a successful response
     it 'returns a successful response' do
       get :index
       expect(response).to be_successful
     end
   end
 
-
   describe 'GET #show' do
+  # Test that a public post can be viewed successfully
     context 'when post is public' do
-      # Test that a public post can be viewed successfully
       it 'returns a successful response' do
         get :show, params: { id: post_obj.id }
         expect(response).to be_successful
@@ -100,7 +99,7 @@ RSpec.describe PostsController, type: :controller do
 
     # Non-Owner Cannot Delete Post
     context 'when user is not owner' do
-      before do 
+      before do
         sign_in other_user
         @post = create(:post, user: user)  # Create the post before testing deletion
       end

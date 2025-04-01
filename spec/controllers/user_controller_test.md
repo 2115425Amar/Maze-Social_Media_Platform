@@ -1,4 +1,4 @@
-Your unit tests for `UsersController` are structured using **RSpec** and **FactoryBot**, and they are validating the functionality of different actions in the controller. Here’s a detailed breakdown of how your unit testing works:
+Unit tests for `UsersController` are structured using **RSpec** and **FactoryBot**, and they are validating the functionality of different actions in the controller.
 
 ---
 
@@ -93,7 +93,7 @@ end
 ---
 
 ## **4. How FactoryBot Works**
-FactoryBot simplifies test data creation. Your `user` factory looks like this:
+FactoryBot simplifies test data creation.  `user` factory looks like this:
 
 ```ruby
 FactoryBot.define do
@@ -127,9 +127,7 @@ end
 ---
 
 ## **Summary**
-✅ Ensures `index` lists users correctly.  
-✅ Ensures `show` displays user details properly.  
-✅ Validates access control (redirects unauthorized users).  
-✅ Uses FactoryBot to create test data efficiently.  
-
-Let me know if you need more explanation! 🚀
+ 1.Ensures `index` lists users correctly.  
+ 2.Ensures `show` displays user details properly.  
+ 3.Validates access control (redirects unauthorized users).  
+ 4.Uses FactoryBot to create test data efficiently.  

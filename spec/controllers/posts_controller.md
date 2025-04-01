@@ -1,7 +1,6 @@
 ### **Explanation of the Test Suite for `PostsController`**
 
-Your test suite ensures that the `PostsController` behaves correctly for different users and post conditions. Below is a detailed breakdown of how the tests work:
-
+Test suite ensures that the `PostsController` behaves correctly for different users and post conditions.
 ---
 
 ## **1. Test Setup**
@@ -9,7 +8,6 @@ Your test suite ensures that the `PostsController` behaves correctly for differe
   - The test uses `FactoryBot` to create `User` and `Post` objects.
   - The `post` factory has traits:
     - `:private` - makes a post private (`public: false`).
-    - `:with_image` - allows adding an image to a post.
 
 - **Test Variables (`let`)**
   - `user` → The main test user.
@@ -39,7 +37,7 @@ Your test suite ensures that the `PostsController` behaves correctly for differe
 ## **3. Testing `show` Action (`GET #show`)**
 - **Purpose:** Ensure different users can (or cannot) access posts based on their visibility.
 
-### **✅ Public Post (Accessible to All)**
+### ** Public Post (Accessible to All)**
 ```ruby
 it 'returns a successful response' do
   get :show, params: { id: post_obj.id }
@@ -49,7 +47,7 @@ end
 - Sends a GET request for a **public post**.
 - Ensures that the response is **successful**.
 
-### **✅ Private Post (Accessible to Owner)**
+### ** Private Post (Accessible to Owner)**
 ```ruby
 it 'returns a successful response' do
   get :show, params: { id: private_post.id }
@@ -59,7 +57,7 @@ end
 - The **owner** requests their private post.
 - Ensures a **successful response**.
 
-### **❌ Private Post (Blocked for Non-Owner)**
+### ** Private Post (Blocked for Non-Owner)**
 ```ruby
 before { sign_in other_user }
 
@@ -77,7 +75,7 @@ end
 ## **4. Testing `create` Action (`POST #create`)**
 - **Purpose:** Ensure post creation works correctly.
 
-### **✅ Valid Post Creation**
+### ** Valid Post Creation**
 ```ruby
 it 'creates a new post' do
   expect {
@@ -88,7 +86,7 @@ end
 - Sends a `POST` request with **valid post attributes**.
 - Ensures a new post is **successfully created**.
 
-### **❌ Invalid Post Creation**
+### ** Invalid Post Creation**
 ```ruby
 it 'does not create a new post' do
   expect {
@@ -104,7 +102,7 @@ end
 ## **5. Testing `update` Action (`PATCH #update`)**
 - **Purpose:** Ensure a user can **update their own posts**.
 
-### **✅ Owner Updates Post Successfully**
+### ** Owner Updates Post Successfully**
 ```ruby
 it 'updates the post' do
   patch :update, params: { id: post_obj.id, post: { description: 'Updated' } }
@@ -119,7 +117,7 @@ end
 ## **6. Testing `destroy` Action (`DELETE #destroy`)**
 - **Purpose:** Ensure users **can (or cannot) delete posts**.
 
-### **✅ Owner Can Delete Post**
+### ** Owner Can Delete Post**
 ```ruby
 it 'deletes the post' do
   post_to_delete = create(:post, user: user)
@@ -132,7 +130,7 @@ end
 - Sends a `DELETE` request.
 - Ensures the **post count decreases** (i.e., post is deleted).
 
-### **❌ Non-Owner Cannot Delete Post**
+### ** Non-Owner Cannot Delete Post**
 ```ruby
 before do 
   sign_in other_user
@@ -167,9 +165,8 @@ end
 ---
 
 ## **Why This Test Suite Is Effective**
-✅ **Covers all key actions** (`index`, `show`, `create`, `update`, `destroy`).  
-✅ **Tests different user roles** (owner vs. non-owner).  
-✅ **Ensures proper authorization** (only owners can update/delete).  
-✅ **Verifies validation rules** (empty descriptions not allowed).  
+1. **Covers all key actions** (`index`, `show`, `create`, `update`, `destroy`).  
+2. **Tests different user roles** (owner vs. non-owner).  
+3. **Ensures proper authorization** (only owners can update/delete).  
+4. **Verifies validation rules** (empty descriptions not allowed).  
 
-This is a solid test suite for ensuring that your `PostsController` behaves correctly under different conditions. 🚀 Let me know if you need any improvements! 😃
