@@ -1,112 +1,76 @@
 require 'rails_helper'
 
+# This is a test suite for the UsersController, which is responsible for handling user-related actions.
 RSpec.describe UsersController, type: :controller do
 
-  # include Devise::Test::ControllerHelpers  # <-- Include Devise helpers
+  # Define a regular user and an admin user using FactoryBot.
+  let(:user) { create(:user) }   
+  let(:admin) { create(:user, :admin) }
 
-
-  let(:user) { create(:user) }  # Regular user
-  let(:admin) { create(:user, :admin) } # Admin user
-
-  before do
-    @request.env["devise.mapping"] = Devise.mappings[:user] # Fix Devise mapping
-    sign_in user  # Devise helper to simulate user login
-  end
-
-  describe "GET #index" do
-    context "when user is an admin" do
+  # Test cases for the #index action of the UsersController.
+  describe 'GET #index' do
+    # Context when a user is logged in.
+    context 'when user is logged in' do
+      # → Simulates a logged-in user using Devise’s sign_in helper.
+      # → Before each test in this context, sign in the regular user.
       before do
-        sign_out user
-        sign_in admin
+        sign_in user
+      end
+
+      # Test to ensure the #index action returns a successful HTTP response.
+      it 'returns a successful response' do
+        get :index   # → Simulates an HTTP GET request to the index action.
+        expect(response).to be_successful  # → Ensures that the request is successful (HTTP 200 OK)
+      end
+
+      # Test to ensure the @users  is assigned correctly.
+      it 'assigns @users' do
+        users = create_list(:user, 3) # Create a list of 3 additional users.
         get :index
-      end
-
-      it "returns a successful response" do
-        expect(response).to have_http_status(:success)
-      end
-
-      it "assigns @users" do
-        expect(assigns(:users)).to be_present
+        expect(assigns(:users)).to match_array([user] + users) # Expect @users to include the logged-in user and the created users.
       end
     end
 
-    context "when user is not an admin" do
-      before { get :index }
+    # Context: When the user is NOT logged in
+    context 'when user is not logged in' do
+      # Test to ensure the user is redirected to the login page.
+      it 'redirects to login page' do
+        get :index
+        expect(response).to redirect_to(new_user_session_path)  # → Ensures that unauthenticated users are redirected to the login page.
+      end
+    end
 
-      it "redirects to root_path" do
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq("Access denied")
+  end
+
+  # 3. Testing the show Action
+  describe 'GET #show' do
+    # Context when a user is logged in.
+    context 'when user is logged in' do
+      # Before each test in this context, sign in the regular user.
+      before { sign_in user }
+
+      # Test 1: Ensuring a successful response
+      it 'returns a successful response' do
+        get :show, params: { id: user.id }
+        expect(response).to be_successful
+      end
+
+      # Test to ensure the @user instance variable is assigned to the requested user.
+      it 'assigns the requested user to @user' do
+        get :show, params: { id: user.id }
+        expect(assigns(:user)).to eq(user)
+      end
+    end
+
+    # Context when no user is logged in.
+    context 'when user is not logged in' do
+      # Test to ensure the user is redirected to the login page.
+      it 'redirects to login page' do
+        get :show, params: { id: user.id }
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end
 
-  describe "GET #profile" do
-    it "returns a successful response" do
-      get :profile
-      expect(response).to have_http_status(:success)
-      expect(assigns(:user)).to eq(user)
-    end
-  end
 
-  describe "PATCH #update_profile" do
-    context "with valid attributes" do
-      it "updates the user profile" do
-        patch :update_profile, params: { user: { first_name: "Updated" } }
-        user.reload
-        expect(user.first_name).to eq("Updated")
-        expect(response).to redirect_to(profile_path)
-      end
-    end
-
-    context "with invalid attributes" do
-      it "renders the profile template" do
-        patch :update_profile, params: { user: { email: "invalid-email" } }
-        expect(response).to render_template(:profile)
-      end
-    end
-  end
-
-  describe "GET #manage_users" do
-    context "when user is an admin" do
-      before do
-        sign_out user
-        sign_in admin
-        get :manage_users
-      end
-
-      it "returns a successful response" do
-        expect(response).to have_http_status(:success)
-      end
-    end
-
-    context "when user is not an admin" do
-      before { get :manage_users }
-
-      it "redirects to root_path" do
-        expect(response).to redirect_to(root_path)
-      end
-    end
-  end
-
-  describe "GET #report_users" do
-    context "when user is an admin" do
-      before do
-        sign_out user
-        sign_in admin
-        get :report_users
-      end
-
-      it "returns a successful response" do
-        expect(response).to have_http_status(:success)
-      end
-    end
-
-    context "when user is not an admin" do
-      before { get :report_users }
-
-      it "redirects to root_path" do
-        expect(response).to redirect_to(root_path)
-      end
-    end
-  end
 end

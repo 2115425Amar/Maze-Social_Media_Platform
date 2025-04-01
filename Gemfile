@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem 'devise'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 7.1.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -51,6 +51,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem 'rspec-rails', '~> 6.1.0'
+  gem 'factory_bot_rails'
+  gem 'faker'
 end
 
 group :development do
@@ -62,6 +66,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  gem 'shoulda-matchers', '~> 5.0'
+  gem 'rails-controller-testing'
 end
 
 gem "rolify", "~> 6.0"
@@ -75,23 +82,3 @@ gem 'cloudinary'
 # for sending emails 
 gem 'sendgrid-ruby'
 gem 'dotenv-rails', groups: [:development, :test]
-
-gem "rspec-rails", "~> 7.1", :groups => [:development, :test]
-
-# gem "bshoulda-matchers", "~> 6.4", :group => :test
-
-group :test do
-  gem 'shoulda-matchers', '~> 5.0'
-end
-
-group :development, :test do
-  gem 'factory_bot_rails'
-end
-
-group :development, :test do
-  gem 'faker'
-end
-
-gem 'rails-controller-testing'
-
-gem 'warden'

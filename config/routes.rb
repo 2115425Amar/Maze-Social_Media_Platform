@@ -34,6 +34,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Add users resource
+  resources :users, only: [:index, :show, :edit, :update]
+
   root "home#index"
 
      # idekiq Web UI (Dashboard)

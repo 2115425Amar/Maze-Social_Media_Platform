@@ -1,10 +1,29 @@
   # /home/hp/Desktop/auth2/devise_auth/app/controllers/users_controller.rb
   class UsersController < ApplicationController
     before_action :authenticate_user!
-    before_action :check_admin, only: [ :index, :manage_users,  :new,  :report_users ]
+    before_action :check_admin, only: [:manage_users, :new, :report_users]
+    before_action :set_user, only: [:show, :edit, :update]
   
     def index
-      @users = User.page(params[:page]).per(10)
+      @users = User.all
+      respond_to do |format|
+        format.html
+        format.json { render json: @users }
+      end
+    end
+  
+    def show
+    end
+  
+    def edit
+    end
+  
+    def update
+      if @user.update(user_params)
+        redirect_to @user, notice: 'User was successfully updated.'
+      else
+        render :edit
+      end
     end
   
     def profile
@@ -45,11 +64,16 @@
   
     private
   
+    def set_user
+      @user = User.find(params[:id])
+    end
+  
     def check_admin
       redirect_to root_path, alert: "Access denied" unless current_user.has_role?(:admin)
     end
   
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation,  :avatar, role_ids: [])
+      params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :avatar)
+      # params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation,  :avatar, role_ids: [])
     end
-    end
+  end
