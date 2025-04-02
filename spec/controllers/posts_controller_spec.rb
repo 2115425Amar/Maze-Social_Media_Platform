@@ -7,7 +7,6 @@ RSpec.describe PostsController, type: :controller do
   let(:post_obj) { create(:post, user: user) }
   let(:private_post) { create(:post, :private, user: user) }
 
-
   # Ensures that the user is signed in before each test, using Devise's sign_in helper.
   before { sign_in user }
 

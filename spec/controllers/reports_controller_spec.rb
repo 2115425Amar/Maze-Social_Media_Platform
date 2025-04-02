@@ -76,5 +76,6 @@ describe ReportsController, type: :controller do
         expect(flash[:alert]).to eq('Access denied')
       end
     end
+    
   end
 end

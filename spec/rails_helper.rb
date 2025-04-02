@@ -37,6 +37,11 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces
   config.filter_rails_from_backtrace!
+
+  # Clear ActionMailer deliveries before each test
+  config.before(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
 end
 
 # Configure Shoulda Matchers

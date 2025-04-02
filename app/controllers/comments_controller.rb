@@ -9,7 +9,8 @@ class CommentsController < ApplicationController
 
     if @comment.save
       # Check the referer to determine where to redirect
-      if request.referer.include?(post_path(@post))
+       # Safely check referer before calling include?
+    if request.referer && request.referer.include?(post_path(@post))
         redirect_to post_path(@post), notice: "Comment added!"
       else
         redirect_to posts_path, notice: "Comment added!"

@@ -135,8 +135,7 @@ class ReportsController < ApplicationController
     package.serialize(file_path)
     Rails.logger.info "Excel file saved to #{file_path}"
 
-      package.to_stream.read
+    package.to_stream.read
     end
   end
-  
 end
