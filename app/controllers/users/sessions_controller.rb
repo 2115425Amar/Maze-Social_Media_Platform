@@ -1,7 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   # customizations, if any, go here
   def new
-      super
+    super
   end
 
     def create

@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_08_122651) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_08_122651) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -92,7 +92,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_08_122651) do
     t.string "first_name"
     t.string "last_name"
     t.string "phone_number"
-    t.string "avatar_url"
     t.boolean "active", default: true
     t.string "avatar_public_id"
     t.index ["email"], name: "index_users_on_email", unique: true

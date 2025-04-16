@@ -39,8 +39,6 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-     # idekiq Web UI (Dashboard)
-    mount Sidekiq::Web => "/sidekiq"
 end
 
 
