@@ -1,0 +1,54 @@
+Based on your `PostsController` under the namespace `Api::V1` and the current routes, here is a full list of **API URLs** with examples and explanations:
+
+---
+
+### 📘 Base URL:
+```
+/api/v1/posts
+```
+
+---
+
+### 📚 All Available Endpoints:
+
+| HTTP Verb | Endpoint                        | Description                                 | Example URL                          |
+|-----------|----------------------------------|---------------------------------------------|--------------------------------------|
+| **GET**   | `/api/v1/posts`                 | Get all posts                               | `/api/v1/posts`                      |
+| **GET**   | `/api/v1/posts?user_id=1`       | Get posts for a specific user               | `/api/v1/posts?user_id=1`           |
+| **GET**   | `/api/v1/posts/:id`             | Get a single post                           | `/api/v1/posts/42`                  |
+| **POST**  | `/api/v1/posts`                 | Create a new post                           | `/api/v1/posts`                      |
+| **PUT**   | `/api/v1/posts/:id`             | Fully update a post                         | `/api/v1/posts/42`                  |
+| **PATCH** | `/api/v1/posts/:id`             | Partially update a post                     | `/api/v1/posts/42`                  |
+| **DELETE**| `/api/v1/posts/:id`             | Delete a post                               | `/api/v1/posts/42`                  |
+
+---
+
+### 🛠 Example Payloads
+
+#### ✅ POST `/api/v1/posts`
+```json
+{
+  "post": {
+    "description": "My new post",
+    "public": true
+  }
+}
+```
+
+#### ✅ PATCH `/api/v1/posts/42`
+```json
+{
+  "post": {
+    "description": "Updated description"
+  }
+}
+```
+
+---
+
+Let me know if you'd like to:
+- Add more custom endpoints (like `/api/v1/posts/:id/like`)
+- Document these as OpenAPI YAML
+- Add nested resources like comments or likes under posts
+
+Want me to generate a Swagger/OpenAPI file for these routes?

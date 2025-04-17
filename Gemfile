@@ -82,3 +82,12 @@ gem 'cloudinary'
 # for sending emails 
 gem 'sendgrid-ruby'
 gem 'dotenv-rails', groups: [:development, :test]
+
+# gem 'swagger-docs'
+# 
+group :development, :test do
+  gem 'rswag-ui'
+  gem 'rswag-api'
+  gem 'rswag-specs'
+end
+

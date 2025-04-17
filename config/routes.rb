@@ -1,5 +1,10 @@
+
 require "sidekiq/web"
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+mount Rswag::Api::Engine => '/api-docs'
+
+  
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions" }
@@ -39,53 +44,12 @@ Rails.application.routes.draw do
 
   root "home#index"
 
+  namespace :api do
+    namespace :v1 do
+      resources :posts
+    end
+  end
+  
 end
 
 
-
-
-# ----------------------------------------------
-# namespace :admin do
-#   resources :users do
-#     member do
-#       post 'activate'
-#       post 'deactivate'
-#     end
-
-#     collection do
-#       get 'filter_by_role'
-#     end
-#   end
-#   resources :posts, only: [:index, :show] # Admin can view posts and comments
-#   resources :comments, only: [:destroy]   # Admin can delete comments
-# end
-# ----------------------------------------------------
-# namespace :admin do
-#   get 'users', to: 'users#index'
-#   get 'users/:id', to: 'users#show'
-#   post 'users', to: 'users#create'
-#   put 'users/:id', to: 'users#update'
-#   delete 'users/:id', to: 'users#destroy'
-#   post 'users/:id/activate', to: 'users#activate'
-#   post 'users/:id/deactivate', to: 'users#deactivate'
-
-#   get 'users/filter_by_role', to: 'users#filter_by_role'
-
-#   get 'posts', to: 'posts#index'
-#   get 'posts/:id', to: 'posts#show'
-
-# end
-
-
-# member Routes
-# Purpose: Used to define routes that act on a specific member (a single record) of the resource.
-# URL Structure: Includes the :id of the resource in the URL.
-# Example: If you have a posts resource, a member route might be used to like a specific post.
-
-# When the action is specific to a single record (e.g., liking a post, toggling the status of a user).
-
-# ---------------------------------
-# collection Routes
-# Purpose: Used to define routes that act on the entire collection of the resource (not tied to a specific record).
-# URL Structure: Does not include the :id of the resource.
-# Example: If you have a posts resource, a collection route might be used to search all posts.

@@ -613,3 +613,109 @@ Let me know if you need more explanation! 🚀
 
 
 
+
+
+
+You don’t have to shoe‑horn everything into a single giant `swagger.yaml`—you can break your OpenAPI definitions out by controller (or feature) and let the Swagger UI show them all in one place via its dropdown.
+
+---
+
+## 1. Organize your spec files under `swagger/`
+
+```
+<your‑app>/
+└── swagger/
+    └── v1/
+        ├── posts.yaml
+        ├── users.yaml
+        ├── comments.yaml
+        └── registrations.yaml
+```
+
+Each of those files is a valid OpenAPI 3.0 document that contains only the `paths:` + `components:` relevant to that controller. For example, **`posts.yaml`** would look like:
+
+```yaml
+openapi: 3.0.3
+info:
+  title: Posts API
+  version: 1.0.0
+
+paths:
+  /api/v1/posts:
+    get:
+      tags:
+        - Posts
+      # …etc…
+
+components:
+  schemas:
+    Post:
+      # …
+```
+
+Repeat for **`users.yaml`**, **`comments.yaml`**, etc.
+
+---
+
+## 2. Configure rswag‑api to serve them all
+
+In **`config/initializers/rswag_api.rb`**:
+
+```ruby
+Rswag::Api.configure do |c|
+  # serve everything under <rails_root>/swagger
+  c.openapi_root = Rails.root.join('swagger').to_s
+end
+```
+
+That tells rswag‑api to auto‑serve `/api-docs/v1/posts.yaml`, `/api-docs/v1/users.yaml`, etc., as long as those files exist.
+
+---
+
+## 3. Tell rswag‑ui about each spec
+
+In **`config/initializers/rswag_ui.rb`**, register one endpoint per file:
+
+```ruby
+Rswag::Ui.configure do |c|
+  c.openapi_endpoint '/api-docs/v1/posts.yaml',         'Posts API'
+  c.openapi_endpoint '/api-docs/v1/users.yaml',         'Users API'
+  c.openapi_endpoint '/api-docs/v1/comments.yaml',      'Comments API'
+  c.openapi_endpoint '/api-docs/v1/registrations.yaml', 'User Registration'
+end
+```
+
+When you hit **`http://localhost:3000/api-docs`** you’ll get a dropdown with each of those four docs.
+
+---
+
+## 4. Mount the engines (if you haven’t already)
+
+Make sure your `config/routes.rb` includes, **inside** the `Rails.application.routes.draw` block:
+
+```ruby
+mount Rswag::Ui::Engine => '/api-docs'
+mount Rswag::Api::Engine => '/api-docs'
+```
+
+---
+
+## 5. Restart & Verify
+
+```bash
+rails tmp:cache:clear
+bin/rails server
+```
+
+- **Raw spec**:  `http://localhost:3000/api-docs/v1/posts.yaml`  
+- **Swagger UI**: `http://localhost:3000/api-docs`  (dropdown will list each file)
+
+---
+
+### 🛠 Alternative: Auto‑generate with rswag‑specs
+
+If you’d rather not maintain those YAML files by hand, you can write request specs under `spec/integration/` (one per controller). Rswag‑specs will then compile them into your `swagger/v1/*.yaml` for you.
+
+---
+
+Let me know if you’d like an example of splitting one of your existing specs out, or help wiring up rswag‑specs!
