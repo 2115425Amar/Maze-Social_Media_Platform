@@ -85,9 +85,13 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 # gem 'swagger-docs'
 # 
-group :development, :test do
-  gem 'rswag-ui'
-  gem 'rswag-api'
-  gem 'rswag-specs'
-end
+# group :development, :test do
+#   gem 'rswag-ui'
+#   gem 'rswag-api'
+#   gem 'rswag-specs'
+# end
 
+# Add them to the main gems list (outside any group):
+gem 'rswag'
+gem 'rswag-api'
+gem 'rswag-ui'
