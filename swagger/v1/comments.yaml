@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: Users API
+  version: 1.0.0
+  description: API for managing users (CRUD with authorization)
+
+servers:
+  - url: http://localhost:3000
+
+
+paths:
+  /posts/{post_id}/comments:
+    post:
+      tags:
+        - Comments
+      summary: Create a comment on a post
+      description: Allows an authenticated user to comment on a specific post.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post to comment on
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      example: "This is an awesome post!"
+              required:
+                - comment
+      responses:
+        '201':
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Comment added!
+                  comment:
+                    $ref: '#/components/schemas/Comment'
+        '401':
+          description: Unauthorized (user not logged in)
+        '422':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  reasons:
+                    type: array
+                    items:
+                      type: string
+components:
+  schemas:
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        user_id:
+          type: integer
+        post_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

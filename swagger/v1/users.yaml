@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: Users API
+  version: 1.0.0
+  description: API for managing users (CRUD with authorization)
+
+servers:
+  - url: http://localhost:3000
