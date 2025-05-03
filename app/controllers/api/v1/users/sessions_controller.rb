@@ -6,11 +6,13 @@ module Api
         skip_before_action :verify_authenticity_token
 
         def create
+          # Find user by email
           user = User.find_by(email: params[:user][:email])
 
           if user&.valid_password?(params[:user][:password])
+            # Check if user is active
             if user.active?
-              sign_in(user)
+              sign_in(user)  # Sign in the user using Devise
               render json: {
                 message: "Logged in successfully.",
                 user: {
@@ -29,6 +31,7 @@ module Api
         end
 
         def destroy
+          # Logout the user by signing out
           if current_user
             sign_out(current_user)
             render json: { message: "Logged out successfully." }, status: :ok

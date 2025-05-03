@@ -1,6 +1,6 @@
 # app/controllers/users/registrations_controller.rb
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters
   skip_before_action :verify_authenticity_token, only: [ :create, :new ]
 
   # overrode the create method provided by Devise:

@@ -95,3 +95,8 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'rswag'
 gem 'rswag-api'
 gem 'rswag-ui'
+
+gem "devise-jwt", "~> 0.12.1"
+
+gem 'rack-cors'
+

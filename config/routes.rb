@@ -85,21 +85,13 @@ Rails.application.routes.draw do
     end
   end
 
-  # namespace :api do
-  #   devise_scope :user do
-  #     post 'login', to: 'users/sessions#create'
-  #     delete 'logout', to: 'users/sessions#destroy'
-  #   end
-  # end
   
 
   # get 'api/v1/users/registrations/test', to: 'api/v1/users/registrations#test'
-
 
 
   # http://localhost:3000/sidekiq
   mount Sidekiq::Web => "/sidekiq"
   
   root "home#index"
-
 end
